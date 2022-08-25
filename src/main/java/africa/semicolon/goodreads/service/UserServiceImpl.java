@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         verificationMessageRequest messageRequest = verificationMessageRequest.builder()
                 .subject("VERIFY EMAIL")
-                .sender("adeyinkawale13@gmail.com")
+                .sender("adeyinkawale36@gmail.com")
                 .receiver(user.getEmail())
                 .domainUrl(host)
                 .verificationToken(token)

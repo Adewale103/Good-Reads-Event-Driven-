@@ -1,5 +1,6 @@
 package africa.semicolon.goodreads.security.jwt;
 
+import africa.semicolon.goodreads.exceptions.GoodReadsException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.SignatureException;
@@ -52,20 +53,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             logger.warn("Couldn't find bearer string header will be ignored");
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            log.info("User details --> {}", userDetails);
-            if (tokenProvider.validateJWTToken(authToken, userDetails)) {
-                UsernamePasswordAuthenticationToken authentication =
-                        tokenProvider.getAuthenticationToken(authToken,
-                                SecurityContextHolder.getContext().getAuthentication(),
-                                userDetails);
+            try {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                if (userDetails == null){
+                    throw new GoodReadsException("User not found", 403);
+                }
+                log.info("User details --> {}", userDetails);
+                if (tokenProvider.validateJWTToken(authToken, userDetails)) {
+                    UsernamePasswordAuthenticationToken authentication =
+                            tokenProvider.getAuthenticationToken(authToken,
+                                    SecurityContextHolder.getContext().getAuthentication(),
+                                    userDetails);
 
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                log.info("auth --> {}",authentication);
-                logger.info("authenticated user " + username + " setting security context");
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    logger.info("authenticated user " + username + " setting security context");
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            } catch (GoodReadsException exception){
+                log.info("User not found");
+                response.sendError(exception.getStatusCode(), exception.getMessage());
             }
+
         }
         filterChain.doFilter(request, response);
     }

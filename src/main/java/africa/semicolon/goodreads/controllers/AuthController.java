@@ -47,6 +47,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> createUser(HttpServletRequest request, @RequestBody @Valid @NotNull AccountCreationRequest accountCreationRequest) throws UnirestException, GoodReadsException, ExecutionException, InterruptedException, GoodReadsException {
         String host = request.getRequestURL().toString();
+        log.info("Old Host --> {}", host);
         int index = host.indexOf("/", host.indexOf("/", host.indexOf("/"))+2);
         host = host.substring(0, index+1);
         log.info("Host --> {}", host);
