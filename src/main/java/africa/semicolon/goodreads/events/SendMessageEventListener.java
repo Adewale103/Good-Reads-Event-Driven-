@@ -6,7 +6,6 @@ import africa.semicolon.goodreads.models.verificationMessageRequest;
 import africa.semicolon.goodreads.service.EmailService;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;

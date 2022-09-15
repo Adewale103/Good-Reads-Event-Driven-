@@ -110,9 +110,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void verifyUser(String token) throws GoodReadsException {
         Claims claims = tokenProvider.getAllClaimsFromJWTToken(token);
-        Function<Claims, String> getSubjectFromClaim = Claims::getSubject;
-        Function<Claims, Date> getExpirationDateFromClaim = Claims::getExpiration;
-        Function<Claims, Date> getIssuedAtDateFromClaim= Claims::getIssuedAt;
+        Function<Claims, String> getSubjectFromClaim = claims2 -> claims2.getSubject();
+        Function<Claims, Date> getExpirationDateFromClaim = claims1-> claims1.getExpiration();
+        Function<Claims, Date> getIssuedAtDateFromClaim= claims1 -> claims1.getIssuedAt();
 
         String userId = getSubjectFromClaim.apply(claims);
         if (userId == null){
