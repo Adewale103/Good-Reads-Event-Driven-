@@ -19,8 +19,6 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 public class BookDto extends RepresentationModel<BookDto> implements Serializable {
-    private String id;
-
     private String title;
     private String author;
 
