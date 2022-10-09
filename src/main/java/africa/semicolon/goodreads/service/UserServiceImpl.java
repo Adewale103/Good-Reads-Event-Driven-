@@ -137,6 +137,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new GoodReadsException("User id does not exist",404);
         }
         user.setVerified(true);
+
         userRepository.save(user);
     }
 

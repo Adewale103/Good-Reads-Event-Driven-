@@ -3,6 +3,7 @@ package africa.semicolon.goodreads.service;
 import africa.semicolon.goodreads.models.MailResponse;
 import africa.semicolon.goodreads.models.verificationMessageRequest;
 import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.NoArgsConstructor;
@@ -46,13 +47,13 @@ public class MailgunEmailService implements EmailService {
         log.info("DOMAIN -> {}", DOMAIN);
         log.info("API KEY -> {}", PRIVATE_KEY);
         log.info(messageRequest.getBody());
-        HttpResponse<String> request = Unirest.post("https://api.mailgun.net/v3/" + DOMAIN + "/messages")
+        HttpResponse<JsonNode> request = Unirest.post("https://api.mailgun.net/v3/" + DOMAIN + "/messages")
                 .basicAuth("api", PRIVATE_KEY)
                 .queryString("from", messageRequest.getSender())
                 .queryString("to", messageRequest.getReceiver())
                 .queryString("subject", messageRequest.getSubject())
                 .queryString("html", messageRequest.getBody())
-                .asString();
+                .asJson();
         MailResponse mailResponse = request.getStatus() == 200 ? new MailResponse(true) : new MailResponse(false);
         return CompletableFuture.completedFuture(mailResponse);
 
