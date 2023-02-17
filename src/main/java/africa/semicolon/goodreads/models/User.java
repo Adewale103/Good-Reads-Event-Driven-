@@ -47,10 +47,6 @@ public class User {
         roles.add(new Role(roleType));
     }
 
-//    @SequenceGenerator(
-//            name = "user_id_sequence",
-//            sequenceName = "user_id_sequence"
-//    )
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
